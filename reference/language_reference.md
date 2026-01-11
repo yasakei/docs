@@ -284,14 +284,28 @@ Neutron provides comprehensive string functionality through both properties (no 
 
 ##### Case Conversion Methods
 
+Neutron provides Unicode-aware case conversion that properly handles international characters:
+
 | Method | Description | Example |
 |--------|-------------|---------|
-| `upper()` | Converts to uppercase | `"hello".upper()` → `"HELLO"` |
-| `lower()` | Converts to lowercase | `"HELLO".lower()` → `"hello"` |
+| `upper()` | Converts to uppercase (Unicode-aware) | `"hello".upper()` → `"HELLO"`, `"café".upper()` → `"CAFÉ"` |
+| `lower()` | Converts to lowercase (Unicode-aware) | `"HELLO".lower()` → `"hello"`, `"CAFÉ".lower()` → `"café"` |
 | `capitalize()` | Capitalizes first character | `"hello".capitalize()` → `"Hello"` |
 | `title()` | Converts to title case | `"hello world".title()` → `"Hello World"` |
 | `swapcase()` | Swaps case of all characters | `"Hello".swapcase()` → `"hELLO"` |
 | `casefold()` | Aggressive lowercase for comparisons | `"HELLO".casefold()` → `"hello"` |
+
+```js
+// Unicode case conversion examples
+say("café".upper());     // "CAFÉ"
+say("RÉSUMÉ".lower());   // "résumé"
+say("naïve".upper());    // "NAÏVE"
+say("Zürich".lower());   // "zürich"
+
+// Works with mixed Unicode and ASCII
+var text = "Hello Café!";
+say(text.upper());       // "HELLO CAFÉ!"
+```
 
 ##### Character Classification Methods
 
@@ -392,6 +406,29 @@ var ascii = text.encode("ascii");  // May throw error for non-ASCII
 if (text.isunicode()) {
     say("String contains Unicode characters");
 }
+```
+
+#### Unicode Case Conversion
+
+Neutron provides proper Unicode-aware case conversion for international characters:
+
+```js
+// Latin characters with diacritics
+say("café".upper());        // "CAFÉ"
+say("résumé".upper());      // "RÉSUMÉ"
+say("naïve".upper());       // "NAÏVE"
+say("piñata".upper());      // "PIÑATA"
+
+// Reverse conversion
+say("CAFÉ".lower());        // "café"
+say("ZÜRICH".lower());      // "zürich"
+
+// Mixed text
+var greeting = "Bonjour café!";
+say(greeting.upper());      // "BONJOUR CAFÉ!"
+
+// Supports Latin-1 Supplement (U+00C0-U+00FF)
+// Including: À, Á, Â, Ã, Ä, Å, Æ, Ç, È, É, Ê, Ë, etc.
 ```
 
 #### Unicode Character Properties
@@ -1817,6 +1854,17 @@ var unicodeText = "Café, 世界, Москва";
 say("Unicode text: " + unicodeText);
 say("Contains Unicode: " + unicodeText.isunicode());
 say("Normalized (NFC): " + unicodeText.normalize("NFC"));
+
+// Unicode case conversion
+var frenchText = "café résumé naïve";
+say("French text: " + frenchText);
+say("Uppercase: " + frenchText.upper());
+say("Title case: " + frenchText.title());
+
+var germanText = "Zürich Müller";
+say("German text: " + germanText);
+say("Lowercase: " + germanText.lower());
+say("Uppercase: " + germanText.upper());
 
 // String slicing and indexing
 var sample = "programming";
