@@ -86,6 +86,109 @@ var greeting = "Hello, World!";
 var escaped = "Line 1\nLine 2\tTabbed";
 ```
 
+#### String Escape Sequences
+
+Neutron supports comprehensive escape sequences for special characters and Unicode:
+
+##### Basic Escape Sequences
+
+| Escape | Description | Example |
+|--------|-------------|---------|
+| `\"` | Double quote | `"He said \"Hello\""` |
+| `\\` | Backslash | `"Path: C:\\Users"` |
+| `\n` | Newline | `"Line 1\nLine 2"` |
+| `\r` | Carriage return | `"Text\rOverwrite"` |
+| `\t` | Tab character | `"Name:\tValue"` |
+| `\b` | Backspace | `"Hello\bWorld"` |
+| `\f` | Form feed | `"Page 1\fPage 2"` |
+| `\v` | Vertical tab | `"Line 1\vLine 2"` |
+| `\0` | Null character | `"Text\0End"` |
+
+##### Numeric Escape Sequences
+
+| Escape | Description | Example |
+|--------|-------------|---------|
+| `\xHH` | Hexadecimal byte (00-FF) | `"\x41"` → `"A"` |
+| `\ooo` | Octal byte (000-377) | `"\101"` → `"A"` |
+
+##### Unicode Escape Sequences
+
+| Escape | Description | Example |
+|--------|-------------|---------|
+| `\uXXXX` | Unicode character (4 hex digits) | `"\u0041"` → `"A"` |
+| `\UXXXXXXXX` | Unicode character (8 hex digits) | `"\U00000041"` → `"A"` |
+
+```js
+// Basic escapes
+var message = "She said, \"Hello, World!\"";
+var path = "C:\\Program Files\\Neutron";
+var multiline = "Line 1\nLine 2\nLine 3";
+
+// Hexadecimal escapes
+var copyright = "\xA9 2024 Neutron";  // © 2024 Neutron
+var euro = "\u20AC";                  // €
+var smiley = "\U0001F600";            // 😀
+
+// Mixed usage
+var greeting = "Hello \u4E16\u754C!"; // Hello 世界!
+```
+
+#### Raw String Literals
+
+Raw strings disable escape sequence processing, useful for regular expressions and file paths:
+
+```js
+// Raw string prefix 'r'
+var regex = r"\d+\.\d+";              // Literal backslashes
+var windowsPath = r"C:\Users\Name";   // No need to escape backslashes
+var template = r"Hello\nWorld";       // Literal \n, not newline
+
+// Compare with regular strings
+var regular = "\\d+\\.\\d+";          // Need to escape backslashes
+var rawString = r"\d+\.\d+";          // Much cleaner
+```
+
+#### String Indexing and Slicing
+
+Neutron supports Python-style string indexing with negative indices and advanced slicing:
+
+##### Negative Indexing
+
+```js
+var text = "hello";
+say(text[0]);    // "h" (first character)
+say(text[-1]);   // "o" (last character)
+say(text[-2]);   // "l" (second to last)
+```
+
+##### String Slicing
+
+```js
+var text = "hello world";
+
+// Basic slicing [start:end]
+say(text.slice(0, 5));     // "hello"
+say(text.slice(6));        // "world" (from index 6 to end)
+say(text.slice(0, -6));    // "hello" (from start to 6 from end)
+
+// Step slicing [start:end:step]
+say(text.slice(0, -1, 2)); // "hlowrl" (every 2nd character)
+say(text.slice(-1, -1, -1)); // "dlrow olleh" (reverse string)
+```
+
+#### String Multiplication
+
+Strings can be repeated using the multiplication operator:
+
+```js
+var repeated = "ha" * 3;        // "hahaha"
+var separator = "-" * 10;       // "----------"
+var padding = " " * 5;          // "     "
+
+// Also works with int * string
+var banner = 3 * "!";           // "!!!"
+```
+
 #### String Interpolation
 
 Embed expressions within strings using `${expression}` syntax:
@@ -105,24 +208,249 @@ say("Sum: ${x + y}");
 > [!TIP]
 > String interpolation works with any expression, including function calls and array access.
 
-#### String Methods
+#### String Formatting
 
-Strings provide built-in methods for common operations:
+Neutron provides advanced string formatting capabilities through the `format()` method:
+
+##### Positional Arguments
+
+```js
+var template = "Hello {0}, you are {1} years old!";
+var result = template.format("Alice", 30);
+say(result); // "Hello Alice, you are 30 years old!"
+
+// Multiple uses of same argument
+var repeated = "{0} + {0} = {1}";
+say(repeated.format(5, 10)); // "5 + 5 = 10"
+```
+
+##### Format Specifications
+
+```js
+// Number formatting
+var price = "Price: ${0:2f}";
+say(price.format(19.99)); // "Price: 19.99"
+
+// Padding and alignment
+var aligned = "{0:>10}";     // Right-align in 10 characters
+var padded = "{0:0>5}";      // Pad with zeros to 5 characters
+```
+
+##### Complex Formatting Examples
+
+```js
+// Financial formatting
+var invoice = "Item: {0}, Quantity: {1}, Price: ${2:.2f}";
+say(invoice.format("Widget", 5, 29.99));
+// Output: "Item: Widget, Quantity: 5, Price: $29.99"
+
+// Table formatting
+var header = "{0:<10} {1:>8} {2:>10}";
+say(header.format("Name", "Age", "Salary"));
+// Output: "Name            Age     Salary"
+```
+
+#### String Properties and Methods
+
+Neutron provides comprehensive string functionality through both properties (no parentheses needed) and methods (parentheses required):
+
+##### String Properties
+
+| Property | Description | Example |
+|----------|-------------|---------|
+| `length` | Returns number of characters | `"abc".length` → `3` |
+| `chars` | Returns array of individual characters | `"abc".chars` → `["a", "b", "c"]` |
+
+##### Basic String Methods
 
 | Method | Description | Example |
 |--------|-------------|---------|
-| `length()` | Returns number of characters | `"abc".length` → `3` |
 | `contains(substr)` | Checks if string contains substring | `"hello".contains("ll")` → `true` |
 | `split(delimiter)` | Splits string into array | `"a,b".split(",")` → `["a", "b"]` |
 | `substring(start, [end])` | Returns a substring | `"hello".substring(1, 4)` → `"ell"` |
+| `strip([chars])` | Removes whitespace or specified characters from both ends | `" hello ".strip()` → `"hello"` |
+| `lstrip([chars])` | Removes whitespace or specified characters from left end | `" hello".lstrip()` → `"hello"` |
+| `rstrip([chars])` | Removes whitespace or specified characters from right end | `"hello ".rstrip()` → `"hello"` |
+| `replace(old, new, [count])` | Replaces occurrences of substring | `"hello".replace("l", "x")` → `"hexxo"` |
+
+##### String Search Methods
+
+| Method | Description | Example |
+|--------|-------------|---------|
+| `find(substr, [start], [end])` | Returns index of first occurrence, -1 if not found | `"hello".find("ll")` → `2` |
+| `rfind(substr, [start], [end])` | Returns index of last occurrence, -1 if not found | `"hello".rfind("l")` → `3` |
+| `index(substr, [start], [end])` | Like find() but throws error if not found | `"hello".index("ll")` → `2` |
+| `rindex(substr, [start], [end])` | Like rfind() but throws error if not found | `"hello".rindex("l")` → `3` |
+
+##### Case Conversion Methods
+
+| Method | Description | Example |
+|--------|-------------|---------|
+| `upper()` | Converts to uppercase | `"hello".upper()` → `"HELLO"` |
+| `lower()` | Converts to lowercase | `"HELLO".lower()` → `"hello"` |
+| `capitalize()` | Capitalizes first character | `"hello".capitalize()` → `"Hello"` |
+| `title()` | Converts to title case | `"hello world".title()` → `"Hello World"` |
+| `swapcase()` | Swaps case of all characters | `"Hello".swapcase()` → `"hELLO"` |
+| `casefold()` | Aggressive lowercase for comparisons | `"HELLO".casefold()` → `"hello"` |
+
+##### Character Classification Methods
+
+| Method | Description | Example |
+|--------|-------------|---------|
+| `isalnum()` | True if all characters are alphanumeric | `"abc123".isalnum()` → `true` |
+| `isalpha()` | True if all characters are alphabetic | `"abc".isalpha()` → `true` |
+| `isdigit()` | True if all characters are digits | `"123".isdigit()` → `true` |
+| `islower()` | True if all characters are lowercase | `"hello".islower()` → `true` |
+| `isupper()` | True if all characters are uppercase | `"HELLO".isupper()` → `true` |
+| `isspace()` | True if all characters are whitespace | `"   ".isspace()` → `true` |
+| `istitle()` | True if string is in title case | `"Hello World".istitle()` → `true` |
+
+##### Sequence Operations
+
+| Method | Description | Example |
+|--------|-------------|---------|
+| `slice(start, [end], [step])` | Advanced slicing with step support | `"hello".slice(1, 4, 1)` → `"ell"` |
+
+##### Unicode Methods
+
+| Method | Description | Example |
+|--------|-------------|---------|
+| `normalize(form)` | Unicode normalization (NFC, NFD, NFKC, NFKD) | `text.normalize("NFC")` |
+| `encode(encoding)` | Encode string to bytes | `"hello".encode("utf-8")` |
+| `isunicode()` | True if string contains Unicode characters | `"café".isunicode()` → `true` |
+
+##### Formatting Methods
+
+| Method | Description | Example |
+|--------|-------------|---------|
+| `format(args...)` | Format string with arguments | `"Hello {0}".format("World")` → `"Hello World"` |
 
 ```js
 var text = "Hello, World!";
-say(text.length);          // 13
+
+// Properties (no parentheses)
+say(text.length);            // 13
+say(text.chars);             // ["H", "e", "l", "l", "o", ",", " ", "W", "o", "r", "l", "d", "!"]
+
+// Methods (parentheses required)
 say(text.contains("World")); // true
-var parts = text.split(", "); 
-say(parts[0]);               // "Hello"
-say(text.substring(0, 5));   // "Hello"
+say(text.upper());           // "HELLO, WORLD!"
+say(text.find("World"));     // 7
+say(text.replace("World", "Neutron")); // "Hello, Neutron!"
+
+// Advanced string operations
+var data = "  hello world  ";
+say(data.strip());           // "hello world"
+say(data.title());           // "  Hello World  "
+
+// Character classification
+say("abc123".isalnum());     // true
+say("ABC".isupper());        // true
+say("   ".isspace());        // true
+
+// String slicing with negative indices
+say("hello"[-1]);            // "o"
+say("hello".slice(1, -1));   // "ell"
+```
+
+### Unicode Support
+
+Neutron provides comprehensive Unicode support for international text processing:
+
+#### Unicode Normalization
+
+Unicode text can be normalized to different forms for consistent processing:
+
+```js
+var text = "café";  // May contain composed or decomposed characters
+
+// Normalize to different forms
+var nfc = text.normalize("NFC");   // Canonical composition
+var nfd = text.normalize("NFD");   // Canonical decomposition
+var nfkc = text.normalize("NFKC"); // Compatibility composition
+var nfkd = text.normalize("NFKD"); // Compatibility decomposition
+
+// Use for text comparison
+fun compareText(a, b) {
+    return a.normalize("NFC") == b.normalize("NFC");
+}
+```
+
+#### String Encoding
+
+Convert strings to different character encodings:
+
+```js
+var text = "Hello, 世界!";
+
+// Encode to different formats
+var utf8 = text.encode("utf-8");
+var utf16 = text.encode("utf-16");
+var ascii = text.encode("ascii");  // May throw error for non-ASCII
+
+// Check if string contains Unicode characters
+if (text.isunicode()) {
+    say("String contains Unicode characters");
+}
+```
+
+#### Unicode Character Properties
+
+Use character classification methods with Unicode awareness:
+
+```js
+var unicodeText = "Café123";
+
+say(unicodeText.isalnum());  // true (includes Unicode letters)
+say(unicodeText.isalpha());  // false (contains digits)
+
+// Works with various scripts
+var chinese = "你好";
+say(chinese.isalpha());      // true
+say(chinese.isunicode());    // true
+```
+
+#### Working with Unicode Literals
+
+```js
+// Various ways to represent Unicode
+var heart = "\u2764";           // ❤
+var smiley = "\U0001F600";      // 😀
+var chinese = "\u4F60\u597D";   // 你好
+
+// Mixed Unicode and ASCII
+var greeting = "Hello \u4E16\u754C! \U0001F44B"; // Hello 世界! 👋
+
+// Unicode in string operations
+var repeated = "\u2764" * 3;    // ❤❤❤
+var found = greeting.find("\u4E16"); // Find position of 世
+```
+
+#### String Error Handling
+
+String methods provide comprehensive error handling for edge cases:
+
+```js
+try {
+    var text = "hello";
+    var pos = text.index("xyz");  // Throws error if not found
+} catch (error) {
+    say("Substring not found: " + error);
+}
+
+// Safe alternatives that return -1 instead of throwing
+var pos = text.find("xyz");      // Returns -1 if not found
+if (pos != -1) {
+    say("Found at position: " + pos);
+}
+
+// Encoding errors
+try {
+    var unicode = "café";
+    var ascii = unicode.encode("ascii");  // May throw for non-ASCII
+} catch (error) {
+    say("Encoding error: " + error);
+}
 ```
 
 ### Nil
@@ -1290,16 +1618,45 @@ items[1] = "orange";
 say(items);        // ["apple", "orange", "cherry"]
 ```
 
-### Array Methods
+### Array Properties and Methods
 
-Arrays provide built-in methods:
+Arrays provide both properties (no parentheses needed) and methods (parentheses required):
+
+#### Array Properties
+
+| Property | Description | Example |
+|----------|-------------|---------|
+| `length` | Returns number of elements | `[1, 2, 3].length` → `3` |
+
+#### Array Methods
+
+Arrays provide built-in methods for manipulation:
 
 | Method | Description | Example |
 |--------|-------------|---------|
-| `length()` | Returns number of elements | `[1, 2].length` → `2` |
+| `push(element)` | Adds element to end | `arr.push(4)` |
+| `pop()` | Removes and returns last element | `arr.pop()` → last element |
+| `slice(start, [end])` | Returns portion of array | `arr.slice(1, 3)` |
+| `map(function)` | Transforms each element | `arr.map(fn)` |
+| `filter(function)` | Filters elements | `arr.filter(fn)` |
+| `find(function)` | Finds first matching element | `arr.find(fn)` |
+| `indexOf(element)` | Returns index of element | `arr.indexOf(2)` |
+| `join(separator)` | Joins elements into string | `arr.join(",")` |
+| `reverse()` | Reverses array in place | `arr.reverse()` |
+| `sort()` | Sorts array in place | `arr.sort()` |
 
 ```js
 var list = [10, 20, 30];
+
+// Property (no parentheses)
+say(list.length);  // 3
+
+// Methods (parentheses required)
+list.push(40);
+say(list.length);  // 4
+
+var last = list.pop();
+say(last);         // 40
 say(list.length);  // 3
 ```
 
@@ -1352,20 +1709,21 @@ Here are some complete example programs demonstrating various Neutron features:
 
 ### File Processing with System Operations
 
-```python
+```js
 use sys;
 use json;
 
 // Create a simple data processing program
 say("=== File Processing Demo ===");
 
-// Create sample data
+// Create sample data with Unicode content
 var data = {
   "users": [
     {"name": "Alice", "age": 30, "active": true},
-    {"name": "Bob", "age": 25, "active": false}
+    {"name": "José", "age": 25, "active": false},  // Unicode name
+    {"name": "李明", "age": 28, "active": true}     // Chinese name
   ],
-  "timestamp": time.now()
+  "timestamp": "2024-01-11"
 };
 
 // Write data to file
@@ -1378,17 +1736,104 @@ if (sys.exists("users.json")) {
     var content = sys.read("users.json");
     var parsed = json.parse(content);
     
-    say("Found " + string_length(parsed["users"]) + " users");
-    
-    // Process each user (simplified example)
     var users = parsed["users"];
-    say("Active users:");
-    // Note: Array iteration would require additional language features
+    say("Found " + users.length + " users");
+    
+    // Process each user with string methods
+    say("Processing users:");
+    for (var i = 0; i < users.length; i++) {
+        var user = users[i];
+        var name = user["name"];
+        var status = user["active"] ? "ACTIVE" : "inactive";
+        
+        // Use string methods for formatting
+        var displayName = name.title();
+        var paddedStatus = status.lower().capitalize();
+        var info = "User: {0} - Status: {1}".format(displayName, paddedStatus);
+        
+        say(info);
+        
+        // Check for Unicode characters
+        if (name.isunicode()) {
+            say("  → Contains Unicode characters");
+        }
+    }
 }
 
 // Cleanup
 sys.rm("users.json");
 say("Cleanup completed");
+```
+
+### String Processing Example
+
+```js
+// Comprehensive string processing demonstration
+say("=== String Processing Demo ===");
+
+// Text processing with various string methods
+var rawText = "  Hello, WORLD! Welcome to Neutron Programming.  ";
+say("Original: '" + rawText + "'");
+
+// Basic cleaning and formatting
+var cleaned = rawText.strip();
+var normalized = cleaned.lower().capitalize();
+say("Cleaned: '" + normalized + "'");
+
+// Word processing
+var words = cleaned.split(" ");
+say("Word count: " + words.length);
+
+// Find and replace operations
+var modified = cleaned.replace("world", "Universe");
+var position = modified.find("Universe");
+say("Modified: " + modified);
+say("'Universe' found at position: " + position);
+
+// Case transformations
+say("Uppercase: " + cleaned.upper());
+say("Title case: " + cleaned.title());
+say("Swapped case: " + cleaned.swapcase());
+
+// Character classification
+var testStrings = ["Hello123", "UPPERCASE", "lowercase", "123456", "   "];
+for (var i = 0; i < testStrings.length; i++) {
+    var str = testStrings[i];
+    var checks = [];
+    
+    if (str.isalnum()) checks.push("alphanumeric");
+    if (str.isalpha()) checks.push("alphabetic");
+    if (str.isdigit()) checks.push("numeric");
+    if (str.isupper()) checks.push("uppercase");
+    if (str.islower()) checks.push("lowercase");
+    if (str.isspace()) checks.push("whitespace");
+    
+    var result = checks.length > 0 ? checks.join(", ") : "none";
+    say("'" + str + "' is: " + result);
+}
+
+// Unicode processing
+var unicodeText = "Café, 世界, Москва";
+say("Unicode text: " + unicodeText);
+say("Contains Unicode: " + unicodeText.isunicode());
+say("Normalized (NFC): " + unicodeText.normalize("NFC"));
+
+// String slicing and indexing
+var sample = "programming";
+say("String: " + sample);
+say("First char: " + sample[0]);
+say("Last char: " + sample[-1]);
+say("Slice [2:7]: " + sample.slice(2, 7));
+say("Every 2nd char: " + sample.slice(0, -1, 2));
+say("Reversed: " + sample.slice(-1, -1, -1));
+
+// String multiplication and formatting
+var separator = "=" * 40;
+say(separator);
+var template = "Language: {0}, Version: {1}, Year: {2}";
+var info = template.format("Neutron", "1.2+", 2024);
+say(info);
+say(separator);
 ```
 
 ### Object-Oriented Calculator
