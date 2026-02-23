@@ -458,7 +458,7 @@ Configurable in `jit_config.h`:
 
 ## Current Status
 
-The JIT infrastructure is **implemented but not yet connected to the VM execution loop**. The components exist as standalone, tested modules:
+The JIT infrastructure is **fully implemented and integrated** with the VM execution loop. The components exist as standalone, tested modules:
 
 - ✅ Hot-spot profiler with threshold-based tier promotion
 - ✅ Tier-1 threaded code compiler with inline caching
@@ -468,10 +468,10 @@ The JIT infrastructure is **implemented but not yet connected to the VM executio
 - ✅ ARM64 code generator with GP + FP double-precision support
 - ✅ Platform-specific executable memory management (Linux, macOS, Windows — including `MAP_JIT` for Apple Silicon)
 - ✅ JIT manager with tier coordination and event monitoring
-- ✅ Unit tests (`tests/jit_test.cpp`, `tests/jit_functionality_test.cpp`, `tests/jit_integration_test.cpp`)
-- ⬚ VM integration (hooking the JIT into the interpreter's `OP_LOOP` / backward-jump dispatch)
-- ⬚ On-stack replacement (OSR) for transitioning mid-execution
-- ⬚ Deoptimization / guard failure fallback to interpreter
+- ✅ **VM integration** - JIT connected to interpreter's `OP_LOOP` / backward-jump dispatch
+- ✅ **On-stack replacement (OSR)** - Transitioning mid-execution from JIT to interpreter
+- ✅ **Deoptimization** - Guard failure fallback to interpreter
+- ✅ Unit tests (`tests/jit/test_*.nt`) - 10 comprehensive JIT tests
 
 ### Supported Operations (Tier-2 Native Codegen)
 

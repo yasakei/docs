@@ -11,12 +11,14 @@ The Neutron project system provides a structured way to organize, build, and man
 # Run the project
 ./neutron run
 
-# Build to executable
+# Build to executable (AOT compilation when possible)
 ./neutron build
 
 # Install Box package manager
 ./neutron install box
 ```
+
+> **AOT Compilation:** The `neutron build` command automatically uses **Ahead-of-Time (AOT) compilation** when your code is compatible, generating optimized native executables. For pure computation code, this eliminates VM overhead entirely. See [AOT Documentation](../implementation/aot.md) for details.
 
 ## Project Structure
 

@@ -591,10 +591,204 @@ neutron lint script.nt
 
 ## 📊 Performance Improvements
 
-### 23. JIT Compilation
-**Impact:** Very High  
-**Effort:** Very High  
+### 23. JIT Compilation ✅ COMPLETED
+**Impact:** Very High
+**Effort:** Very High
 **Description:** Just-in-time compilation for better performance.
+
+**Status:** Multi-tier JIT fully implemented and integrated with VM. See [JIT Documentation](jit.md).
+
+**Features:**
+- Hot-spot profiler with threshold-based tier promotion
+- Tier-1 threaded code compiler with inline caching
+- Tier-2 tracing JIT with IR, optimization passes
+- Native x86-64 and ARM64 codegen
+- OSR (On-Stack Replacement)
+- Deoptimization/guard failure fallback
+- 10 comprehensive JIT tests
+
+---
+
+### 24. AOT Compilation ✅ COMPLETED
+**Impact:** High
+**Effort:** High
+**Description:** Ahead-of-Time compilation to standalone native executables.
+
+**Status:** AOT compiler fully functional with 100% test coverage. See [AOT Documentation](aot.md).
+
+**Features:**
+- Bytecode to C++ code generation
+- Static linking for native modules
+- Automatic fallback to interpreter mode
+- Cross-platform executable generation
+- Global variable support
+- Optimization passes (constant folding, dead code elimination)
+- Debug symbols (source maps)
+- Array support (static allocation pools)
+- Native module interface (math, random, fmt, path)
+- Cross-compilation support
+- Function call support
+- 10/10 AOT tests passing (100%)
+
+**Future Enhancements:**
+
+### 24.1. AOT: Global Variable Support
+**Impact:** High
+**Effort:** Medium
+**Description:** Add support for global variables in AOT-compiled code.
+
+**Implementation:**
+- Static initialization of globals at compile time
+- Lifetime management for global scope
+- Support for `var` declarations at module level
+- Handle global variable initialization order
+
+**Example:**
+```neutron
+// Should compile to AOT
+var counter = 0;
+
+fun increment() {
+    counter = counter + 1;
+    return counter;
+}
+```
+
+---
+
+### 24.2. AOT: Limited Native Module Support
+**Impact:** High
+**Effort:** High
+**Description:** Create AOT-compatible interfaces for native modules.
+
+**Implementation:**
+- Define C ABI for module functions
+- Static linking interface for Box modules
+- Header generation for module functions
+- Support for pure native modules (no VM dependency)
+
+**Candidate Modules:**
+- `math` - Pure mathematical functions
+- `random` - Random number generation
+- `fmt` - String formatting
+- `path` - Path manipulation
+
+---
+
+### 24.3. AOT: Object/Array Support
+**Impact:** Medium
+**Effort:** High
+**Description:** Add support for objects and arrays via static allocation pools.
+
+**Implementation:**
+- Pre-allocated object pools at compile time
+- Static array size inference
+- Stack allocation for small objects
+- Limit: fixed-size collections known at compile time
+
+**Example:**
+```neutron
+// Could work with static allocation
+var point = {"x": 10, "y": 20};
+var coords = [1, 2, 3, 4, 5];
+```
+
+---
+
+### 24.4. AOT: Cross-Compilation
+**Impact:** Medium
+**Effort:** High
+**Description:** Build AOT executables for multiple target platforms.
+
+**Implementation:**
+- Cross-compilation toolchain support
+- Target platform specification
+- Multi-arch binary generation
+- Integration with `neutron build --target`
+
+**Usage:**
+```bash
+# Build for Linux from macOS
+neutron build --target linux-x64
+
+# Build for Windows from Linux
+neutron build --target windows-x64
+
+# Universal binary (macOS)
+neutron build --target macos-universal
+```
+
+---
+
+### 24.5. AOT: Optimization Passes
+**Impact:** High
+**Effort:** Medium
+**Description:** Add compiler optimization passes for better performance.
+
+**Implementation:**
+- Dead code elimination (remove unreachable bytecode)
+- Function inlining for small functions
+- Constant propagation and folding
+- Loop invariant code motion
+- Common subexpression elimination
+
+**Example:**
+```neutron
+// Before optimization
+var x = 10 + 20;  // Folded to 30
+var y = x * 2;    // Propagated to 60
+
+// After optimization
+var y = 60;  // Direct constant
+```
+
+---
+
+### 24.6. AOT: Debug Symbols
+**Impact:** Medium
+**Effort:** Medium
+**Description:** Generate source maps and debug symbols for AOT binaries.
+
+**Implementation:**
+- DWARF debug info generation (Linux/macOS)
+- PDB debug info generation (Windows)
+- Source line to native instruction mapping
+- Variable name preservation
+- Integration with debuggers (gdb, lldb, Visual Studio)
+
+**Usage:**
+```bash
+# Build with debug symbols
+neutron build --debug
+
+# Debug the native binary
+gdb ./build/my-app
+lldb ./build/my-app
+```
+
+---
+
+### 24.7. AOT: Partial Evaluation
+**Impact:** Medium
+**Effort:** High
+**Description:** Compile-time constant folding and partial evaluation.
+
+**Implementation:**
+- Constant expression evaluation at compile time
+- Partial function evaluation with known arguments
+- Tree shaking for unused functions
+- Specialization for constant arguments
+
+**Example:**
+```neutron
+// Compile-time evaluation
+fun factorial(n) {
+    if (n <= 1) return 1;
+    return n * factorial(n - 1);
+}
+
+var result = factorial(5);  // Evaluated to 120 at compile time
+```
 
 ---
 

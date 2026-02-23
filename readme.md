@@ -32,10 +32,11 @@
 
 ### Implementation & Development
 
-**[implementation/jit.md](implementation/jit.md)** - Multi-tier JIT compilation architecture (x86-64 & ARM64)  
-**[implementation/roadmap.md](implementation/roadmap.md)** - Future development plans  
-**[implementation/known-issues.md](implementation/known-issues.md)** - Known bugs and limitations  
-**[extending-neutron.md](extending-neutron.md)** - Extending Neutron with native code  
+**[implementation/jit.md](implementation/jit.md)** - Multi-tier JIT compilation architecture (x86-64 & ARM64)
+**[implementation/aot.md](implementation/aot.md)** - Ahead-of-Time compilation to native executables
+**[implementation/roadmap.md](implementation/roadmap.md)** - Future development plans
+**[implementation/known-issues.md](implementation/known-issues.md)** - Known bugs and limitations
+**[extending-neutron.md](extending-neutron.md)** - Extending Neutron with native code
 **[type-system.md](type-system.md)** - Type system documentation
 
 ### Error Handling

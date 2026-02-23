@@ -10,6 +10,9 @@ This guide provides comprehensive instructions for building Neutron and the Box 
 - [Windows](#windows)
 - [Build Options](#build-options)
 - [Troubleshooting](#troubleshooting)
+- [AOT Compilation](#aot-compilation)
+
+> **For AOT (Ahead-of-Time) compilation** - Compiling Neutron programs to standalone native executables, see [AOT Documentation](../implementation/aot.md).
 
 ## Prerequisites
 
