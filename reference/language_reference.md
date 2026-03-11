@@ -547,6 +547,150 @@ var a = 1, b = 2, c = 3;
 var name = "Alice", age = 30;
 ```
 
+### Public Variables
+
+By default, variables declared inside blocks `{}` are only accessible within that block. The `pub` keyword makes variables accessible outside their declaring scope.
+
+```js
+{
+    pub var message = "Hello!";
+    say(message);  // Works inside
+}
+say(message);  // Also works outside!
+
+var x = 10;
+{
+    say(x);  // Can read outer variables
+    pub var y = 20;  // Public - accessible outside
+}
+say(y);  // Works: 20
+```
+
+#### Public vs Regular Variables
+
+```js
+{
+    pub var publicVar = "I'm public!";
+    var privateVar = "I'm private!";
+    
+    say(publicVar);   // ✓ Works
+    say(privateVar);  // ✓ Works
+}
+
+say(publicVar);   // ✓ Works (public)
+say(privateVar);  // ✗ Error: Undefined variable
+```
+
+#### Use Cases
+
+**1. Shared State Between Functions**
+
+```js
+pub var counter = 0;
+
+fun increment() {
+    counter = counter + 1;
+}
+
+increment();
+increment();
+say(counter);  // Output: 2
+```
+
+**2. Loop Values After Loop**
+
+```js
+for (var i = 0; i < 5; i++) {
+    pub var lastValue = i * 10;
+}
+say(lastValue);  // Output: 40 (last iteration value)
+```
+
+**3. Nested Blocks**
+
+```js
+{
+    pub var outer = 100;
+    
+    {
+        pub var inner = 200;
+        say(inner);  // 200
+    }
+    
+    say(inner);  // 200 (still accessible!)
+}
+
+say(outer);  // 100
+say(inner);  // 200
+```
+
+> [!NOTE]
+> Public variables are treated as globals at compile time. Use them sparingly to avoid naming conflicts and maintain code clarity.
+
+> [!WARNING]
+> You cannot declare two variables with the same name, even if one is public. Redeclaration will result in an error.
+
+### Static Variables
+
+Static variables retain their value between function calls. They must be initialized when declared and cannot be modified after initialization (immutable).
+
+#### Using `static` Keyword
+
+```js
+static var counter = 0;
+
+fun increment() {
+    counter = counter + 1;  // ❌ Error: Cannot assign to static variable
+    say(counter);
+}
+```
+
+> [!NOTE]
+> Static variables are immutable - they cannot be reassigned after initialization. This makes them ideal for constants and cached values.
+
+#### Using `&` Shorthand
+
+Neutron provides a shorthand syntax for static variables using the `&` prefix:
+
+```js
+var &counter = 0;
+
+fun showCounter() {
+    say(counter);  // Can read, but not modify
+}
+
+showCounter();  // 0
+showCounter();  // 0 (value retained)
+```
+
+#### Combining with `pub`
+
+You can combine `pub` with static variables:
+
+```js
+pub var &MAX_VALUE = 100;  // Public static constant
+```
+
+#### Multiple Variables
+
+```js
+var &a = 1, &b = 2, c = 3;  // a and b are static, c is regular
+```
+
+> [!NOTE]
+> The `&` prefix is purely syntactic sugar for `static var`. Both forms produce identical behavior.
+
+> [!WARNING]
+> Static variables must always be initialized and cannot be modified after declaration.
+
+### LSP Support
+
+The Neutron Language Server Protocol (LSP) provides autocomplete and syntax highlighting for both `pub` and `&` syntax:
+
+- **`pub` keyword**: Appears in autocomplete suggestions
+- **`&` symbol**: Suggested as "static variable shorthand"
+- **Syntax highlighting**: Both `pub` and `&` are highlighted as keywords in supported editors
+
 ### Dynamic Typing
 
 Variables can hold values of any type and change types during runtime:

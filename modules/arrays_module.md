@@ -487,6 +487,256 @@ arrays.shuffle(arr);
 // Array now has elements in random order
 ```
 
+---
+
+## Functional Programming Methods
+
+The arrays module provides higher-order functions for functional programming patterns. These methods accept callback functions and support **truthy/falsy semantics** for predicate functions.
+
+### Truthy/Falsy Semantics
+
+As of March 2026, predicate-based functions use truthy evaluation instead of requiring strict boolean returns. The following values are considered **falsy**:
+- `nil`
+- `false`
+- `0` (zero)
+- `""` (empty string)
+- `[]` (empty array)
+
+All other values are **truthy**.
+
+```neutron
+use arrays;
+
+// Truthy values
+say(arrays.some([1, 2, 3], fun(x) { return x; }));  // true
+say(arrays.some(["hello"], fun(x) { return x; }));  // true
+
+// Falsy values
+say(arrays.some([0, nil, ""], fun(x) { return x; }));  // false
+```
+
+---
+
+### `arrays.map(array, callback)`
+Creates a new array with the results of calling a provided function on every element.
+
+**Parameters:**
+- `array`: The array to map over
+- `callback`: Function to call for each element (receives current element)
+
+**Returns:** New array with transformed elements
+
+**Example:**
+```neutron
+use arrays;
+
+var numbers = arrays.range(1, 6);
+fun double(x) { return x * 2; }
+var doubled = arrays.map(numbers, double);
+say("Doubled: " + arrays.to_string(doubled));  // [2, 4, 6, 8, 10]
+
+// With inline function
+var squared = arrays.map(numbers, fun(x) { return x * x; });
+say("Squared: " + arrays.to_string(squared));  // [1, 4, 9, 16, 25]
+```
+
+---
+
+### `arrays.filter(array, callback)`
+Creates a new array with all elements that pass the test implemented by the provided function.
+
+**Parameters:**
+- `array`: The array to filter
+- `callback`: Predicate function (receives current element, should return truthy value)
+
+**Returns:** New array with filtered elements
+
+**Example:**
+```neutron
+use arrays;
+
+var numbers = arrays.range(1, 11);
+fun isEven(x) { return x % 2 == 0; }
+var evens = arrays.filter(numbers, isEven);
+say("Evens: " + arrays.to_string(evens));  // [2, 4, 6, 8, 10]
+
+// Using truthy semantics
+var mixed = [0, 1, nil, 2, "", 3];
+var truthy = arrays.filter(mixed, fun(x) { return x; });
+say("Truthy: " + arrays.to_string(truthy));  // [1, 2, 3]
+```
+
+---
+
+### `arrays.find(array, callback)`
+Returns the value of the first element that passes the test implemented by the provided function.
+
+**Parameters:**
+- `array`: The array to search
+- `callback`: Predicate function (receives current element, should return truthy value)
+
+**Returns:** First matching element, or `nil` if not found
+
+**Example:**
+```neutron
+use arrays;
+
+var numbers = arrays.range(1, 11);
+fun isFive(x) { return x == 5; }
+var found = arrays.find(numbers, isFive);
+say("Found: " + found);  // 5
+
+// Using truthy semantics
+var mixed = [nil, 0, "", "hello", 42];
+var firstTruthy = arrays.find(mixed, fun(x) { return x; });
+say("First truthy: " + firstTruthy);  // "hello"
+```
+
+---
+
+### `arrays.reduce(array, callback, [initial])`
+Applies a function against an accumulator and each element to reduce it to a single value.
+
+**Parameters:**
+- `array`: The array to reduce
+- `callback`: Function to execute (receives accumulator and current element)
+- `initial`: Optional initial value (defaults to first element)
+
+**Returns:** Single accumulated value
+
+**Throws:** Runtime error if array is empty and no initial value provided
+
+**Example:**
+```neutron
+use arrays;
+
+var numbers = arrays.range(1, 6);
+fun add(a, b) { return a + b; }
+var sum = arrays.reduce(numbers, add);
+say("Sum: " + sum);  // 15
+
+// With initial value
+var sumWithInitial = arrays.reduce(numbers, add, 100);
+say("Sum + 100: " + sumWithInitial);  // 115
+
+// String concatenation
+var words = arrays.new();
+arrays.push(words, "Hello");
+arrays.push(words, " ");
+arrays.push(words, "World");
+fun concat(a, b) { return a + b; }
+var result = arrays.reduce(words, concat);
+say("Concatenated: " + result);  // "Hello World"
+```
+
+---
+
+### `arrays.every(array, callback)`
+Tests whether all elements in the array pass the test implemented by the provided function.
+
+**Parameters:**
+- `array`: The array to test
+- `callback`: Predicate function (receives current element, should return truthy value)
+
+**Returns:** `true` if all elements pass, `false` otherwise
+
+**Example:**
+```neutron
+use arrays;
+
+var numbers = arrays.range(1, 6);
+fun isPositive(x) { return x > 0; }
+var allPositive = arrays.every(numbers, isPositive);
+say("All positive: " + allPositive);  // true
+
+// Using truthy semantics
+var mixed = [1, 2, nil, 4];
+var allTruthy = arrays.every(mixed, fun(x) { return x; });
+say("All truthy: " + allTruthy);  // false
+```
+
+---
+
+### `arrays.some(array, callback)`
+Tests whether at least one element in the array passes the test implemented by the provided function.
+
+**Parameters:**
+- `array`: The array to test
+- `callback`: Predicate function (receives current element, should return truthy value)
+
+**Returns:** `true` if at least one element passes, `false` otherwise
+
+**Example:**
+```neutron
+use arrays;
+
+var numbers = arrays.range(1, 11);
+fun isGreaterThanEight(x) { return x > 8; }
+var hasLarge = arrays.some(numbers, isGreaterThanEight);
+say("Has large: " + hasLarge);  // true
+
+// Using truthy semantics
+var mixed = [0, nil, "", "hello"];
+var hasTruthy = arrays.some(mixed, fun(x) { return x; });
+say("Has truthy: " + hasTruthy);  // true
+```
+
+---
+
+### `arrays.flat_map(array, callback)`
+First maps each element using a mapping function, then flattens the result into a new array.
+
+**Parameters:**
+- `array`: The array to map and flatten
+- `callback`: Function to call for each element (should return array or value)
+
+**Returns:** New flattened array
+
+**Example:**
+```neutron
+use arrays;
+
+var numbers = arrays.range(1, 4);
+fun duplicate(x) { return [x, x * 10]; }
+var flat = arrays.flat_map(numbers, duplicate);
+say("Flat mapped: " + arrays.to_string(flat));  // [1, 10, 2, 20, 3, 30]
+
+// Non-array returns are pushed directly
+fun justDouble(x) { return x * 2; }
+var flat2 = arrays.flat_map(numbers, justDouble);
+say("Flat mapped (scalars): " + arrays.to_string(flat2));  // [2, 4, 6]
+```
+
+---
+
+### Method Chaining
+
+Functional methods can be chained for powerful data transformations:
+
+```neutron
+use arrays;
+
+var numbers = arrays.range(1, 11);
+
+// Chain filter and map
+fun isEven(x) { return x % 2 == 0; }
+fun double(x) { return x * 2; }
+var result = arrays.map(arrays.filter(numbers, isEven), double);
+say("Even numbers doubled: " + arrays.to_string(result));  // [4, 8, 12, 16, 20]
+
+// Complex pipeline
+var sum = arrays.reduce(
+    arrays.map(
+        arrays.filter(numbers, isEven),
+        double
+    ),
+    fun(a, b) { return a + b; }
+);
+say("Sum: " + sum);  // 60
+```
+
+---
+
 ## Common Usage Patterns
 
 ### Array Building

@@ -4,9 +4,99 @@ This document lists known issues and limitations in the Neutron interpreter and 
 
 ## Recently Fixed Issues ✅
 
+### JIT Tier-1 Compilation
+**Status:** ✅ FIXED (March 2026)
+**Description:** The Tier-1 JIT compiler now properly compiles and executes bytecode using threaded code generation. Previously, Tier-1 compilation would silently fail and fall back to the interpreter.
+
+**What Changed:**
+- Added code caching for Tier-1 compiled methods
+- Implemented on-demand compilation when executing Tier-1 code
+- Proper fallback to interpreter if compilation fails
+
+```neutron
+// JIT now properly compiles hot loops to Tier-1
+for (var i = 0; i < 10000; i = i + 1) {
+    // This loop will be JIT compiled after threshold
+    sum = sum + i;
+}
+```
+
+### Arrays Module - Truthy Semantics for Higher-Order Functions
+**Status:** ✅ FIXED (March 2026)
+**Description:** The `arrays.filter()`, `arrays.some()`, `arrays.every()`, and `arrays.find()` functions now properly support truthy/falsy value semantics instead of requiring strict boolean returns.
+
+**What Changed:**
+- Added `isTruthy()` helper function
+- Updated all predicate-based array methods to use truthy evaluation
+- Matches JavaScript/Python semantics for dynamic languages
+
+```neutron
+use arrays;
+
+// Filter with truthy values (not just booleans)
+var arr = [0, 1, 2, nil, 3, ""];
+fun identity(x) { return x; }
+var filtered = arrays.filter(arr, identity);
+// Result: [1, 2, 3] - filters out 0, nil, and ""
+
+// Some with truthy check
+var hasTruthy = arrays.some(arr, identity);  // true
+
+// Every with truthy check
+var allTruthy = arrays.every(arr, identity);  // false
+```
+
+### Null Pointer Checks in VM Call Dispatch
+**Status:** ✅ FIXED (March 2026)
+**Description:** Added null pointer validation in `VM::callValue()` to prevent crashes from corrupted objects or callables.
+
+**What Changed:**
+- Added null checks for object and callable pointers
+- Proper error messages instead of segfaults
+- Defensive programming for BoundMethod calls
+
+### GC Pending Exception Marking
+**Status:** ✅ FIXED (March 2026)
+**Description:** The garbage collector now properly marks pending exceptions to prevent them from being collected during exception handling.
+
+**What Changed:**
+- Added `markValue(pendingException)` in `VM::markRoots()`
+- Prevents use-after-free during exception unwinding
+- Critical for exception safety in long-running programs
+
+### Stack Trace Line Number Accuracy
+**Status:** ✅ FIXED (March 2026)
+**Description:** Fixed off-by-one error in stack trace calculation that caused incorrect line numbers in error reports.
+
+**What Changed:**
+- Corrected IP calculation for current frame (no subtraction)
+- Maintains subtraction for parent frames (return addresses)
+- Accurate line numbers in exception handlers
+
+### sys.exec() Command Injection Prevention
+**Status:** ✅ FIXED (March 2026)
+**Description:** Added validation to prevent shell command injection attacks through `sys.exec()`.
+
+**What Changed:**
+- Rejects empty command strings
+- Blocks dangerous shell operators: `&&`, `||`, `;`, `|`, `` ` ``, `$()`
+- Throws descriptive error messages
+
+```neutron
+use sys;
+
+// These now throw errors:
+sys.exec("");  // Error: command cannot be empty
+sys.exec("ls && rm -rf /");  // Error: contains invalid shell operators
+sys.exec("echo $(whoami)");  // Error: contains invalid shell operators
+
+// This still works:
+sys.exec("ls -la");  // OK
+```
+
 ### Logical OR and AND Operators
-**Status:** ✅ FIXED  
-**Description:** The `or` and `and` operators (lowercase keywords) work correctly in all contexts.  
+**Status:** ✅ FIXED
+**Description:** The `or` and `and` operators (lowercase keywords) work correctly in all contexts.
 **Note:** Use `and` and `or` (lowercase), not `&&` or `||` which are not implemented.
 
 ```neutron

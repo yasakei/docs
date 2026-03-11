@@ -380,6 +380,41 @@ The manager orchestrates the entire JIT pipeline:
 | Interpreter → Tier-1 | Method call count ≥ `TIER1_COMPILATION_THRESHOLD` (50) |
 | Tier-1 → Tier-2 | Call count ≥ `TIER2_COMPILATION_THRESHOLD` (50) AND total execution time > 10ms |
 
+### Tier-1 Execution (Updated March 2026)
+
+As of March 2026, Tier-1 execution is fully implemented with on-demand compilation:
+
+1. **Code Caching:** Compiled Tier-1 code is cached in `tier1_code_cache_` for reuse
+2. **On-Demand Compilation:** When `executeCompiledCode()` is called for Tier-1:
+   - Check cache for existing compiled code
+   - If not found, compile on-demand using available bytecode handlers
+   - Cache the result for future executions
+3. **Fallback:** If compilation fails, gracefully falls back to interpreter execution
+4. **Reset Support:** Tier-1 cache is properly cleared during JIT reset
+
+```cpp
+// Simplified execution flow
+case CompilationTier::TIER1: {
+    auto it = tier1_code_cache_.find(method_id);
+    if (it == tier1_code_cache_.end() && frame.chunk) {
+        // Compile on-demand
+        auto tier1_code = tier1_compiler_->compile(method_id, *frame.chunk, handlers);
+        if (tier1_code) {
+            tier1_code_cache_[method_id] = std::move(tier1_code);
+        }
+    }
+    
+    // Execute compiled code if available
+    if (it != tier1_code_cache_.end() && it->second) {
+        success = tier1_compiler_->execute(*it->second, &frame);
+    } else {
+        // Fallback to interpreter
+        success = true;
+    }
+    break;
+}
+```
+
 ---
 
 ## Code Generators

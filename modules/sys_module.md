@@ -480,23 +480,49 @@ sys.exit(0);
 ---
 
 ### `sys.exec(command)`
-Executes a shell command and returns the output.
+Executes a shell command and returns the exit code.
 
 **Parameters:**
 - `command` (string): Shell command to execute
 
-**Returns:** String containing the command output
+**Returns:** Number representing the exit code (0 for success)
+
+**Throws:** Runtime error if:
+- Command string is empty
+- Command contains dangerous shell operators (`&&`, `||`, `;`, `|`, `` ` ``, `$()`)
+- Command execution fails
+
+**Security:** As of March 2026, `sys.exec()` validates commands to prevent shell injection attacks. The following patterns are blocked:
+- Empty command strings
+- Shell operators: `&&`, `||`, `;`, `|`
+- Command substitution: `` `command` ``, `$(command)`
 
 **Example:**
 ```neutron
 use sys;
 
-var output = sys.exec("ls -la");
-say("Directory listing:");
-say(output);
+// Simple commands work fine
+var exitCode = sys.exec("ls -la");
+say("Exit code: " + exitCode);
 
-var date = sys.exec("date");
-say("Current date: " + date);
+var exitCode2 = sys.exec("date");
+say("Date command exit code: " + exitCode2);
+
+// These will throw errors (security protection):
+// sys.exec("");                    // Error: command cannot be empty
+// sys.exec("ls && rm -rf /");      // Error: contains invalid shell operators
+// sys.exec("echo $(whoami)");      // Error: contains invalid shell operators
+```
+
+**Note:** To capture command output, use command substitution in your shell or redirect to a file:
+```neutron
+use sys;
+
+// Redirect output to a file and read it
+sys.exec("ls -la > output.txt");
+var output = sys.read("output.txt");
+say("Directory listing: " + output);
+sys.rm("output.txt");  // Clean up
 ```
 
 **Throws:** Runtime error if command execution fails
