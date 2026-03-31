@@ -94,7 +94,6 @@ markdown_extensions:
         - bug
         - example
         - quote
-        - admonition
 
 # Navigation
 nav:
