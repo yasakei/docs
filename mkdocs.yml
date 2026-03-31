@@ -34,8 +34,11 @@ theme:
         name: Switch to light mode
   icon:
     repo: fontawesome/brands/github
-  logo: logo.svg
   favicon: favicon.ico
+
+# Custom CSS
+extra_css:
+  - styles/extra.css
 
 # Customization
 extra:
