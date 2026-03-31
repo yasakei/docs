@@ -1,12 +1,12 @@
-# 🚀 Neutron Documentation
+# Neutron Documentation
 
 Welcome to the **Neutron Programming Language** documentation!
 
 ---
 
-## 📚 Find What You Need
+## Find What You Need
 
-### **🎯 I'm New to Neutron**
+### I'm New to Neutron
 
 Start here if you're just getting started:
 
@@ -16,7 +16,7 @@ Start here if you're just getting started:
 
 ---
 
-### **📖 Learn the Language**
+### Learn the Language
 
 Understand how Neutron works:
 
@@ -29,7 +29,7 @@ Understand how Neutron works:
 
 ---
 
-### **🔧 Using Modules**
+### Using Modules
 
 Pre-built functionality for your programs:
 
@@ -59,7 +59,7 @@ Pre-built functionality for your programs:
 
 ---
 
-### **🏗️ Advanced Topics**
+### Advanced Topics
 
 Deep dive into Neutron internals:
 
@@ -74,7 +74,7 @@ Deep dive into Neutron internals:
 
 ---
 
-### **📦 Project Management**
+### Project Management
 
 Manage your Neutron projects:
 
@@ -87,7 +87,7 @@ Manage your Neutron projects:
 
 ---
 
-### **❓ Troubleshooting**
+### Troubleshooting
 
 Having problems?
 
@@ -101,7 +101,7 @@ Having problems?
 
 ---
 
-## 📁 Documentation Structure
+## Documentation Structure
 
 ```
 docs/
@@ -143,7 +143,7 @@ docs/
 
 ---
 
-## 🎓 Learning Path
+## Learning Path
 
 ### Beginner
 1. Read [Quick Start](guides/quickstart.md)
@@ -162,7 +162,7 @@ docs/
 
 ---
 
-## 🔗 External Links
+## External Links
 
 - **GitHub**: [github.com/yasakei/neutron](https://github.com/yasakei/neutron)
 - **Issues**: [Report a bug](https://github.com/yasakei/neutron/issues)
