@@ -7,9 +7,6 @@ site_url: https://yasakei.github.io/docs
 repo_name: yasakei/docs
 repo_url: https://github.com/yasakei/docs
 
-# Docs directory (docs are in root, not in /docs subfolder)
-docs_dir: .
-
 # Theme
 theme:
   name: material
@@ -93,54 +90,54 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Guides:
-    - guides/index.md
-    - Quick Start: guides/quickstart.md
-    - Build Guide: guides/build.md
-    - Common Pitfalls: guides/common-pitfalls.md
-    - Project System: guides/project-system.md
-    - Test Suite: guides/test-suite.md
-    - Durable Execution: guides/durable-execution.md
+    - index.md
+    - Quick Start: quickstart.md
+    - Build Guide: build.md
+    - Common Pitfalls: common-pitfalls.md
+    - Project System: project-system.md
+    - Test Suite: test-suite.md
+    - Durable Execution: durable-execution.md
   - Reference:
-    - reference/index.md
-    - Language Reference: reference/language_reference.md
-    - Module System: reference/module-system.md
-    - Type System: type-system.md
-    - Box Integration: reference/box-project-integration.md
-    - Cross-Platform: reference/cross-platform.md
-    - Buffers: reference/buffers.md
-    - Syntax Cheat Sheet: reference/syntax-quick-ref.md
+    - index.md
+    - Language Reference: language_reference.md
+    - Module System: module-system.md
+    - Type System: ../type-system.md
+    - Box Integration: box-project-integration.md
+    - Cross-Platform: cross-platform.md
+    - Buffers: buffers.md
+    - Syntax Cheat Sheet: syntax-quick-ref.md
   - Modules:
-    - modules/index.md
+    - index.md
     - Core:
-      - sys: modules/sys_module.md
-      - json: modules/json_module.md
-      - http: modules/http_module.md
-      - math: modules/math_module.md
+      - sys: sys_module.md
+      - json: json_module.md
+      - http: http_module.md
+      - math: math_module.md
     - Data & Strings:
-      - fmt: modules/fmt_module.md
-      - strings: modules/strings_module.md
-      - arrays: modules/arrays_module.md
-      - collections: modules/collections_module.md
+      - fmt: fmt_module.md
+      - strings: strings_module.md
+      - arrays: arrays_module.md
+      - collections: collections_module.md
     - System & Time:
-      - time: modules/time_module.md
-      - process: modules/process_module.md
-      - path: modules/path_module.md
-      - async: modules/async_module.md
+      - time: time_module.md
+      - process: process_module.md
+      - path: path_module.md
+      - async: async_module.md
     - Utilities:
-      - log: modules/log_module.md
-      - regex: modules/regex_module.md
-      - random: modules/random_module.md
-      - crypto: modules/crypto_module.md
+      - log: log_module.md
+      - regex: regex_module.md
+      - random: random_module.md
+      - crypto: crypto_module.md
   - Implementation:
-    - implementation/index.md
-    - JIT Compilation: implementation/jit.md
-    - AOT Compilation: implementation/aot.md
-    - Roadmap: implementation/roadmap.md
-    - Known Issues: implementation/known-issues.md
+    - index.md
+    - JIT Compilation: jit.md
+    - AOT Compilation: aot.md
+    - Roadmap: roadmap.md
+    - Known Issues: known-issues.md
   - Error Handling:
-    - error_handling/index.md
-    - Error Handling Guide: error_handling/error-handling.md
+    - index.md
+    - Error Handling Guide: error-handling.md
   - Advanced:
-    - Extending Neutron: extending-neutron.md
-    - LSP Setup: lsp.md
-  - FAQ: faq.md
+    - Extending Neutron: ../extending-neutron.md
+    - LSP Setup: ../lsp.md
+  - FAQ: ../faq.md
