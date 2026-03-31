@@ -44,7 +44,6 @@ extra:
 
 # Extensions
 markdown_extensions:
-  - admonition
   - attr_list
   - def_list
   - footnotes
@@ -95,6 +94,7 @@ markdown_extensions:
         - bug
         - example
         - quote
+        - admonition
 
 # Navigation
 nav:
