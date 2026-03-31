@@ -71,6 +71,38 @@ say(hash); // a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e
 
 **Note:** SHA-256 is cryptographically secure and suitable for security applications.
 
+#### `crypto.sha1(data)`
+
+Computes the SHA-1 hash of a string.
+
+**Parameters:**
+- `data` (string): The string to hash
+
+**Returns:** Hexadecimal string (40 chars)
+
+> ⚠️ SHA-1 is cryptographically broken. Use only for legacy compatibility (e.g. Git object IDs). Prefer `sha256` or `sha512` for new code.
+
+**Example:**
+```js
+use crypto;
+say(crypto.sha1("hello")); // aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d
+```
+
+#### `crypto.sha512(data)`
+
+Computes the SHA-512 hash of a string.
+
+**Parameters:**
+- `data` (string): The string to hash
+
+**Returns:** Hexadecimal string (128 chars)
+
+**Example:**
+```js
+use crypto;
+say(crypto.sha512("hello"));
+```
+
 #### `crypto.md5(data)` ⚠️ **DEPRECATED**
 
 **This function throws an error and is not implemented due to security vulnerabilities in MD5.**
@@ -133,7 +165,95 @@ say(hexId); // e.g., "A1B2C3D4"
 
 Encodes a string to hexadecimal format.
 
+### HMAC
+
+#### `crypto.hmac_sha256(key, message)`
+
+Computes HMAC-SHA256 — a message authentication code using SHA-256.
+
 **Parameters:**
+- `key` (string): The secret key
+- `message` (string): The message to authenticate
+
+**Returns:** Hexadecimal string (64 chars)
+
+**Example:**
+```js
+use crypto;
+
+var mac = crypto.hmac_sha256("my-secret-key", "important data");
+say(mac);
+
+// Verify a webhook signature
+fun verify_webhook(payload, signature, secret) {
+    var expected = crypto.hmac_sha256(secret, payload);
+    return crypto.constant_time_compare(expected, signature);
+}
+```
+
+### Key Derivation
+
+#### `crypto.pbkdf2(password, salt, iterations?, keylen?)`
+
+Derives a cryptographic key from a password using PBKDF2-HMAC-SHA256.
+
+**Parameters:**
+- `password` (string): The password to derive from
+- `salt` (string): A unique salt (use `crypto.random_bytes(16)` to generate)
+- `iterations` (number, optional): Number of iterations. Default: `100000`
+- `keylen` (number, optional): Output key length in bytes (1–64). Default: `32`
+
+**Returns:** Hexadecimal string
+
+**Example:**
+```js
+use crypto;
+
+var salt = crypto.random_bytes(16);
+var hash = crypto.pbkdf2("user_password", salt, 100000, 32);
+say("Stored hash: " + hash);
+say("Salt: " + salt);
+```
+
+### Utilities
+
+#### `crypto.constant_time_compare(a, b)`
+
+Compares two strings in constant time to prevent timing attacks.
+
+**Parameters:**
+- `a` (string): First string
+- `b` (string): Second string
+
+**Returns:** `true` if equal, `false` otherwise
+
+**Example:**
+```js
+use crypto;
+
+// Safe token comparison — won't leak timing info
+var stored = crypto.hmac_sha256("secret", "token");
+var provided = "...";
+if (crypto.constant_time_compare(stored, provided)) {
+    say("Valid token");
+}
+```
+
+#### `crypto.uuid_v4()`
+
+Generates a random UUID v4 (RFC 4122).
+
+**Returns:** UUID string in the format `xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx`
+
+**Example:**
+```js
+use crypto;
+
+var id = crypto.uuid_v4();
+say(id); // e.g. "f6a31913-cc6a-43f9-a3a9-a30f8c4714f5"
+```
+
+### Simple Ciphers
 - `data` (string): The string to encode
 
 **Returns:** Hexadecimal string (lowercase)
