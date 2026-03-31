@@ -1,45 +1,174 @@
-# Neutron Documentation
+# 🚀 Neutron Documentation
 
-## Documentation Index
+Welcome to the **Neutron Programming Language** documentation!
 
-### Getting Started
+---
 
-**[guides/quickstart.md](guides/quickstart.md)** - Get up and running in 5 minutes  
-**[guides/common-pitfalls.md](guides/common-pitfalls.md)** - Common mistakes and how to avoid them  
-**[guides/project-system.md](guides/project-system.md)** - Project management and native builds  
-**[guides/build.md](guides/build.md)** - Complete build instructions for all platforms  
-**[guides/test-suite.md](guides/test-suite.md)** - Running and writing tests
-**[guides/durable-execution.md](guides/durable-execution.md)** - Guide to Checkpoint & Resume features
+## 📚 Find What You Need
 
-### Language Reference
+### **🎯 I'm New to Neutron**
 
-**[reference/language-reference.md](reference/language_reference.md)** - Complete language syntax and features  
-**[reference/module-system.md](reference/module-system.md)** - Module loading and usage patterns  
-**[reference/box-project-integration.md](reference/box-project-integration.md)** - Box integration with Neutron projects  
-**[reference/cross-platform.md](reference/cross-platform.md)** - Platform-specific details
+Start here if you're just getting started:
 
-### Module API Documentation
+1. **[Quick Start](guides/quickstart.md)** — Install Neutron and write your first program (5 minutes)
+2. **[Build Guide](guides/build.md)** — Detailed build instructions for your platform
+3. **[Common Pitfalls](guides/common-pitfalls.md)** — Avoid common mistakes
 
-**[modules/sys_module.md](modules/sys_module.md)** - File I/O, environment, and system operations  
-**[modules/json_module.md](modules/json_module.md)** - JSON parsing, serialization, and file I/O  
-**[modules/http_module.md](modules/http_module.md)** - HTTP client and server with real networking  
-**[modules/regex_module.md](modules/regex_module.md)** - Regular expressions and pattern matching  
-**[modules/math_module.md](modules/math_module.md)** - Mathematical operations  
-**[modules/arrays_module.md](modules/arrays_module.md)** - Array manipulation utilities  
-**[modules/time_module.md](modules/time_module.md)** - Time and date functions  
-**[modules/fmt_module.md](modules/fmt_module.md)** - Type conversion and formatting  
-**[modules/async_module.md](modules/async_module.md)** - Asynchronous operations
+---
 
-### Implementation & Development
+### **📖 Learn the Language**
 
-**[implementation/jit.md](implementation/jit.md)** - Multi-tier JIT compilation architecture (x86-64 & ARM64)
-**[implementation/aot.md](implementation/aot.md)** - Ahead-of-Time compilation to native executables
-**[implementation/roadmap.md](implementation/roadmap.md)** - Future development plans
-**[implementation/known-issues.md](implementation/known-issues.md)** - Known bugs and limitations
-**[extending-neutron.md](extending-neutron.md)** - Extending Neutron with native code
-**[type-system.md](type-system.md)** - Type system documentation
+Understand how Neutron works:
 
-### Error Handling
+| Topic | Description |
+|-------|-------------|
+| **[Language Reference](reference/language_reference.md)** | Complete syntax and features |
+| **[Module System](reference/module-system.md)** | How to use and create modules |
+| **[Type System](type-system.md)** | Understanding types in Neutron |
+| **[Error Handling](error_handling/index.md)** | Handle errors gracefully |
 
-**[error_handling/index.md](error_handling/index.md)** - Error handling overview  
-**[error_handling/error-handling.md](error_handling/error-handling.md)** - Comprehensive error handling guide
+---
+
+### **🔧 Using Modules**
+
+Pre-built functionality for your programs:
+
+#### Core Modules
+| Module | What It Does |
+|--------|--------------|
+| **[sys](modules/sys_module.md)** | File operations, system access |
+| **[json](modules/json_module.md)** | JSON parsing and serialization |
+| **[http](modules/http_module.md)** | HTTP requests (web APIs) |
+| **[math](modules/math_module.md)** | Mathematical operations |
+
+#### Utility Modules
+| Module | What It Does |
+|--------|--------------|
+| **[fmt](modules/fmt_module.md)** | Type conversion and formatting |
+| **[strings](modules/strings_module.md)** | String/text manipulation |
+| **[arrays](modules/arrays_module.md)** | Array/list operations |
+| **[collections](modules/collections_module.md)** | Sets, stacks, queues |
+| **[time](modules/time_module.md)** | Time, dates, delays |
+| **[async](modules/async_module.md)** | Async operations, timers |
+| **[log](modules/log_module.md)** | Logging with levels |
+| **[regex](modules/regex_module.md)** | Regular expressions |
+| **[process](modules/process_module.md)** | Process management |
+| **[path](modules/path_module.md)** | File path utilities |
+| **[random](modules/random_module.md)** | Random numbers |
+| **[crypto](modules/crypto_module.md)** | Cryptographic functions |
+
+---
+
+### **🏗️ Advanced Topics**
+
+Deep dive into Neutron internals:
+
+| Topic | Description |
+|-------|-------------|
+| **[JIT Compilation](implementation/jit.md)** | How JIT works (x86-64 & ARM64) |
+| **[AOT Compilation](implementation/aot.md)** | Compile to native executables |
+| **[Extending Neutron](extending-neutron.md)** | Create native C++ modules |
+| **[LSP Setup](lsp.md)** | Editor integration (VS Code, etc.) |
+| **[Roadmap](implementation/roadmap.md)** | Future development plans |
+| **[Known Issues](implementation/known-issues.md)** | Current limitations and bugs |
+
+---
+
+### **📦 Project Management**
+
+Manage your Neutron projects:
+
+| Topic | Description |
+|-------|-------------|
+| **[Project System](guides/project-system.md)** | Organize Neutron projects |
+| **[Box Integration](reference/box-project-integration.md)** | Package manager usage |
+| **[Durable Execution](guides/durable-execution.md)** | Checkpoint and resume |
+| **[Test Suite](guides/test-suite.md)** | Write and run tests |
+
+---
+
+### **❓ Troubleshooting**
+
+Having problems?
+
+| Resource | Description |
+|----------|-------------|
+| **[FAQ](faq.md)** | Frequently asked questions |
+| **[Quick Syntax Reference](reference/syntax-quick-ref.md)** | Cheat sheet for common operations |
+| **[Error Reference](error_handling/index.md)** | Understand error messages |
+| **[Common Pitfalls](guides/common-pitfalls.md)** | Avoid typical mistakes |
+| **[Known Issues](implementation/known-issues.md)** | Known bugs and workarounds |
+
+---
+
+## 📁 Documentation Structure
+
+```
+docs/
+├── guides/              # How-to guides and tutorials
+│   ├── quickstart.md
+│   ├── build.md
+│   ├── common-pitfalls.md
+│   ├── project-system.md
+│   ├── test-suite.md
+│   └── durable-execution.md
+│
+├── reference/           # Technical reference
+│   ├── language_reference.md
+│   ├── module-system.md
+│   ├── box-project-integration.md
+│   ├── cross-platform.md
+│   └── buffers.md
+│
+├── modules/             # Module API documentation
+│   ├── sys_module.md
+│   ├── json_module.md
+│   ├── http_module.md
+│   └── ... (all modules)
+│
+├── implementation/      # Internals and advanced topics
+│   ├── jit.md
+│   ├── aot.md
+│   ├── roadmap.md
+│   └── known-issues.md
+│
+├── error_handling/      # Error handling documentation
+│   ├── index.md
+│   └── error-handling.md
+│
+├── extending-neutron.md  # Native module development
+├── lsp.md                # Language server setup
+└── readme.md             # You are here
+```
+
+---
+
+## 🎓 Learning Path
+
+### Beginner
+1. Read [Quick Start](guides/quickstart.md)
+2. Try examples from [Language Reference](reference/language_reference.md)
+3. Explore [Core Modules](#core-modules)
+
+### Intermediate
+1. Study [Module System](reference/module-system.md)
+2. Learn [Error Handling](error_handling/index.md)
+3. Build a project using [Project System](guides/project-system.md)
+
+### Advanced
+1. Read [JIT/AOT](implementation/jit.md) documentation
+2. Create [Native Modules](extending-neutron.md)
+3. Contribute to Neutron
+
+---
+
+## 🔗 External Links
+
+- **GitHub**: [github.com/yasakei/neutron](https://github.com/yasakei/neutron)
+- **Issues**: [Report a bug](https://github.com/yasakei/neutron/issues)
+- **Discussions**: [Ask questions](https://github.com/yasakei/neutron/discussions)
+- **NUR**: [Native modules registry](https://github.com/neutron-modules/nur)
+
+---
+
+**Need help?** Check the [Error Reference](error_handling/index.md) or ask in [GitHub Discussions](https://github.com/yasakei/neutron/discussions).
