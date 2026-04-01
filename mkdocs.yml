@@ -81,8 +81,6 @@ markdown_extensions:
       custom_checkbox: true
   - pymdownx.tilde
   - admonition
-  - pymdownx.superfences
-  - docs.gh_admonitions
 
 # Navigation
 nav:
