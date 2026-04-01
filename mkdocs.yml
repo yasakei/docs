@@ -80,7 +80,9 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
-  - github_admonition
+  - admonition
+  - pymdownx.superfences
+  - ./gh_admonitions.py
 
 # Navigation
   - Home: index.md
