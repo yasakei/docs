@@ -82,9 +82,10 @@ markdown_extensions:
   - pymdownx.tilde
   - admonition
   - pymdownx.superfences
-  - ./gh_admonitions.py
+  - gh_admonitions
 
 # Navigation
+nav:
   - Home: index.md
   - Guides:
     - guides/index.md
