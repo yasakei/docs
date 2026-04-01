@@ -80,23 +80,9 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
-  - pymdownx.blocks.admonition:
-      types:
-        - note
-        - abstract
-        - info
-        - tip
-        - success
-        - question
-        - warning
-        - failure
-        - danger
-        - bug
-        - example
-        - quote
+  - github_admonition
 
 # Navigation
-nav:
   - Home: index.md
   - Guides:
     - guides/index.md
