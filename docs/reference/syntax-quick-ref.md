@@ -97,6 +97,16 @@ match (day) {
 }
 ```
 
+### Match with Guards
+```neutron
+var score = 85;
+match (score) {
+    case score if score >= 90 => say("A");
+    case score if score >= 80 => say("B");
+    default => say("Below B");
+}
+```
+
 ### Loops
 ```neutron
 // While
@@ -116,14 +126,16 @@ for (var i = 0; i < 10; i++) {
     say(i);
 }
 
-// For-in range
-for (var i in range(5)) {
-    say(i);
+// For-in object (keys)
+var obj = {"a": 1, "b": 2};
+for (var key in obj) {
+    say(key + ": " + obj[key]);
 }
 
-// For-in array
-for (var item in items) {
-    say(item);
+// For-in array (indices)
+var arr = [10, 20, 30];
+for (var i in arr) {
+    say(arr[i]);
 }
 ```
 
@@ -360,3 +372,73 @@ math.abs(a)          // Absolute
 ---
 
 **Full reference:** [Language Reference](reference/language_reference.md)
+
+## Enum
+
+```neutron
+// Auto-incrementing (starts at 0)
+enum Direction { NORTH, SOUTH, EAST, WEST }
+say(Direction.NORTH);  // 0
+say(Direction.WEST);   // 3
+
+// Explicit values
+enum HttpStatus { OK = 200, NOT_FOUND = 404, ERROR = 500 }
+say(HttpStatus.OK);    // 200
+
+// Mixed
+enum Priority { LOW = 1, MEDIUM, HIGH }  // MEDIUM=2, HIGH=3
+```
+
+## Destructuring
+
+```neutron
+// Array destructuring
+var [a, b, c] = [1, 2, 3];
+say(a);  // 1
+
+// Object destructuring
+var {name, age} = {"name": "Alice", "age": 30};
+say(name);  // "Alice"
+
+// Object destructuring with rename
+var {name: firstName, age: years} = person;
+```
+
+## Spread Operator
+
+```neutron
+fun add(a, b, c) { return a + b + c; }
+
+var nums = [1, 2, 3];
+var result = add(...nums);  // 6
+
+// Mix with regular args
+var result2 = add(1, ...rest);
+```
+
+## Optional Chaining
+
+```neutron
+var user = {"name": "Bob"};
+var name = user?.name;   // "Bob"
+
+var missing = nil;
+var safe = missing?.name;  // nil (no crash)
+```
+
+## Block Comments
+
+```neutron
+#{ This is a block comment }#
+
+#{
+    Multi-line block comment.
+    var ignored = 999;
+}#
+
+var x = 1; #{ inline }# var y = 2;
+```
+
+---
+
+**Full reference:** [Language Reference](language_reference.md)

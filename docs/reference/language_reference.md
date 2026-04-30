@@ -29,8 +29,20 @@ Single-line comments begin with `//` and continue to the end of the line.
 var x = 10; // Inline comment
 ```
 
-> [!NOTE]
-> Multi-line comments are not currently supported.
+Block comments use `#{` and `#}` and can span multiple lines or be nested.
+
+```neutron
+#{ This is a block comment }#
+
+#{
+    Multi-line block comment.
+    Code here is ignored.
+}#
+
+var x = 1; #{ inline block comment }# var y = 2;
+
+#{ Nested #{ block }# comments work too }#
+```
 
 ---
 
@@ -950,6 +962,20 @@ match (status) {
     case 2 => say("Running");
     case 3 => say("Completed");
     default => say("Unknown");
+}
+```
+
+**With guard conditions:**
+
+Guards add an extra `if` condition to a case. If the guard fails, the next case is tried.
+
+```neutron
+var score = 85;
+match (score) {
+    case score if score >= 90 => say("A");
+    case score if score >= 80 => say("B");
+    case score if score >= 70 => say("C");
+    default => say("Below C");
 }
 ```
 
@@ -2156,3 +2182,157 @@ say("Create response status: " + createResponse["status"]);
 ---
 
 *Neutron Language Reference - Version 1.2+*
+
+---
+
+## Enum
+
+Enums declare a named set of constants. Members auto-increment from 0 by default, or you can assign explicit values.
+
+```neutron
+// Auto-incrementing
+enum Direction {
+    NORTH,   // 0
+    SOUTH,   // 1
+    EAST,    // 2
+    WEST     // 3
+}
+
+say(Direction.NORTH);  // 0
+say(Direction.WEST);   // 3
+
+// Explicit values
+enum HttpStatus {
+    OK = 200,
+    NOT_FOUND = 404,
+    SERVER_ERROR = 500
+}
+
+say(HttpStatus.OK);         // 200
+say(HttpStatus.NOT_FOUND);  // 404
+
+// Mixed: explicit then auto-increment continues from last explicit value
+enum Priority {
+    LOW = 1,
+    MEDIUM,   // 2
+    HIGH      // 3
+}
+```
+
+Enums are objects at runtime, so you can iterate their keys with `for...in`:
+
+```neutron
+for (var name in Direction) {
+    say(name + " = " + Direction[name]);
+}
+```
+
+---
+
+## for...in Loop
+
+Iterate over the **keys** of an object or the **indices** of an array.
+
+```neutron
+// Object keys
+var person = {"name": "Alice", "age": 30, "city": "NYC"};
+for (var key in person) {
+    say(key + ": " + person[key]);
+}
+// Output:
+//   name: Alice
+//   age: 30
+//   city: NYC
+
+// Array indices
+var colors = ["red", "green", "blue"];
+for (var i in colors) {
+    say(i + ": " + colors[i]);
+}
+// Output:
+//   0: red
+//   1: green
+//   2: blue
+```
+
+> [!NOTE]
+> `for...in` over an array yields **indices** (0, 1, 2, ...), not values. Use `colors[i]` to access the value.
+
+---
+
+## Destructuring
+
+Unpack arrays or objects into individual variables in a single statement.
+
+### Array Destructuring
+
+```neutron
+var [a, b, c] = [10, 20, 30];
+say(a);  // 10
+say(b);  // 20
+say(c);  // 30
+
+// From a function return value
+fun getCoords() { return [100, 200]; }
+var [x, y] = getCoords();
+```
+
+### Object Destructuring
+
+```neutron
+var {name, age} = {"name": "Bob", "age": 25};
+say(name);  // "Bob"
+say(age);   // 25
+
+// Rename while destructuring
+var {name: firstName, age: years} = {"name": "Carol", "age": 32};
+say(firstName);  // "Carol"
+say(years);      // 32
+```
+
+---
+
+## Spread Operator (`...`)
+
+Expand an array into individual arguments when calling a function.
+
+```neutron
+fun add(a, b, c) {
+    return a + b + c;
+}
+
+var nums = [1, 2, 3];
+var result = add(...nums);  // same as add(1, 2, 3)
+say(result);  // 6
+
+// Mix spread with regular arguments
+fun sum4(a, b, c, d) { return a + b + c + d; }
+var rest = [3, 4];
+say(sum4(1, 2, ...rest));  // 10
+```
+
+---
+
+## Optional Chaining (`?.`)
+
+Safely access a property on a value that might be `nil`. Returns `nil` instead of throwing a runtime error.
+
+```neutron
+var user = {"name": "Alice", "address": {"city": "NYC"}};
+
+// Normal access
+var name = user?.name;   // "Alice"
+
+// Safe access on nil — no crash
+var missing = nil;
+var safe = missing?.name;  // nil
+
+// Useful for conditional logic
+var city = user?.address;
+if (city != nil) {
+    say("City: " + city["city"]);
+}
+```
+
+> [!TIP]
+> Optional chaining is especially useful when working with data that may be partially populated, such as API responses or optional configuration objects.
